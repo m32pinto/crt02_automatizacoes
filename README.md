@@ -1,9 +1,36 @@
 ✅ **Projeto: crt02_automatizacoes**  
 Utilidades para o atendimento na autarquia.
 
+🌟 **Introdução (Atualizações)**
+
+1.1 - 05/12/2025
+
+• Utilidades em construção, alteração na estrutura:
+
+📌 **Alteração no nome dos arquivos**: 
+
+  duas_telas_listener => auto_listener
+  duas_telas_teste => auto_teste
+
+📌  **Os arquivos remanescentes: duas_telas_listener e duas_telas_teste serão utilizado para alteração em linux**
+
+📌 **Existe um erro que quando finaliza a função de sequencia de cliques o scipt parece que está apertando shift será escrito no github para procurar uma resolução** 
+
+📝 **Adição de contruções no código**: 
+
+  - Construção da função de verificação de profissionais ainda não deferidos => auto_teste.py linha: 458
+
+  - Construção de lógica para inicio de funções de automatizações => auto_teste.py linha: 400
+
+📝 **Alterações de identação**: Adicionado o arquivo **dicts.py** com as variáveis caheve conteúdo: **mapeamento_atalhos** e **TEXTOS_PARA_COLAR**
+
+📌 **Adição de referências adentro das ferramentas utilizadas no readme.md**
+
+📌 **Reformulação do desenvolvimento**
+
 ---
 
-🌟 **Introdução (Atualizações)**
+---
 
 1.0 - 30/11/2025
 
@@ -16,12 +43,13 @@ Utilidades para o atendimento na autarquia.
 As utilidades acima são acionadas por combinações de teclas, nesse primeiro momento sempre a primeira tecla contará com **shift** seguida de outra tecla do alfabeto.
 
 ---
-
+---
 💻 **Desenvolvimento (Explicação do código)**
 
-  ### Teremos dois arquivos: 
- - `duas_telas_teste.py`  
- - `duas_telas_listener.py`
+  ### Teremos 3 arquivos: 
+ - `auto_teste.py`  
+ - `auto_listener.py`
+ - `dicts.py`
 
   #### `duas_telas_teste.py` é um dicionário e contém: 
 
@@ -75,3 +103,26 @@ As utilidades acima são acionadas por combinações de teclas, nesse primeiro m
 ✨ **QWEN** - https://lmstudio.ai/models/qwen/qwen3-vl-4b  
 📌 **PYCHARM** - https://www.jetbrains.com/pt-br/pycharm/  
 📌 **VSCODE** - https://code.visualstudio.com/
+📌 **PYTHON**https://www.python.org/
+  -
+
+
+📚 **Referências (Adentro das ferramentas)**
+
+- Python dicionários:
+
+https://docs.python.org/3.14/tutorial/datastructures.html#dictionaries
+
+https://docs.python.org/3.14/library/stdtypes.html#typesmapping
+
+- Py. erros:
+
+https://docs.python.org/3/tutorial/errors.html  
+
+- Py. lambda
+
+https://docs.python.org/3/reference/expressions.html#lambda 
+
+- Py. if, while, for, try... else... with
+
+https://docs.python.org/3/reference/compound_stmts.html#if  
