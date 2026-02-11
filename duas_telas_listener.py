@@ -6,23 +6,11 @@ from pynput import keyboard
 from duas_telas_teste import colar_texto # 1. Importamos nossa nova função
 from duas_telas_teste import colar_texto_sequencia
 
+import tkinter as tk
+from tkinter import messagebox
+
 # =====================================================#
 ## Fim Bibliotecas ##
-# =====================================================#
-
-# =====================================================#
-## Início Função callback par lidar com multiplas chaves (criar_callback_sequencia) ##
-# =====================================================#
-
-def criar_callback_sequencia(chaves_str):
-    """
-    Cria um callback que chama colar_textos_sequencia com as chaves fornecidas.
-    """
-    chaves = chaves_str.split(',') # Divide a ‘string’ por vírgula
-    return lambda: colar_texto_sequencia(chaves)
-
-# =====================================================#
-## Fim   Função callback par lidar com multiplas chaves (criar_callback_sequencia) ##
 # =====================================================#
 
 # =====================================================#
@@ -88,6 +76,22 @@ def criar_callback(chave_do_texto):
 ## Fim Função criar_callbacks ##
 # =====================================================#
 
+
+# =====================================================#
+## Início Função callback par lidar com multiplas chaves (criar_callback_sequencia) ##
+# =====================================================#
+
+def criar_callback_sequencia(chaves_str):
+    """
+    Cria um callback que chama colar_textos_sequencia com as chaves fornecidas.
+    """
+    chaves = chaves_str.split(',') # Divide a ‘string’ por vírgula
+    return lambda: colar_texto_sequencia(chaves)
+
+# =====================================================#
+## Fim   Função callback par lidar com multiplas chaves (criar_callback_sequencia) ##
+# =====================================================#
+
 # =====================================================#
 ## Início hotkeys_para_ouvir ##
 # =====================================================#
@@ -125,5 +129,3 @@ with keyboard.GlobalHotKeys(hotkeys_para_ouvir) as listener:
 ##Ao usar callbacks, é possível definir comportamentos específicos para diferentes eventos.
 ##Por exemplo, aciona-se um callback quando o usuário clica em um botão,
 ##insere dados em um campo de entrada ou seleciona uma opção em um menu suspenso.
-
-# =====================================================#

@@ -1,22 +1,23 @@
 # =====================================================#
-## Início Bibliotecas ##
+## Interface Gráfica com Tkinter + Listener de Atalhos ##
 # =====================================================#
 
+import tkinter as tk
+from tkinter import font
+import threading
+from pynput import keyboard
 import pyautogui
 import pyperclip
+import sys
+import time
 
 # =====================================================#
-## Fim Bibliotecas ##
-# =====================================================#
-
-# =====================================================#
-## Início da Variável de dicionário ##
+## Dicionário de Textos (reutilizado do duas_telas_teste.py) ##
 # =====================================================#
 TEXTOS_PARA_COLAR = {
-    
     'solicitacao_de_registro_profissional': """SOLICITAÇÃO DE REGISTRO PROFISSIONAL
 
-    Entre no site: https://corporativo.sinceti.net.br/app/view/sight/externo.php?form=CadastrarProfissional e preencha o formulário, sendo obrigatório o preenchimento nos espaços que conterem um asterisco vermelho. Segue abaixo os documentos necessários para solicitação de Registro Profissional:
+    Entre no site: https://corporativo.sinceti.net.br/app/view/sight/externo.php?form=CadastrarProfissional     e preencha o formulário, sendo obrigatório o preenchimento nos espaços que conterem um asterisco vermelho. Segue abaixo os documentos necessários para solicitação de Registro Profissional:
 
     1. Diploma ou certificado do ensino técnico;
 
@@ -40,12 +41,12 @@ TEXTOS_PARA_COLAR = {
     Colocar um e-mail e no final gerar o boleto de análise de registo.
 
     Após 24h do pagamento, ao constar no sistema, a sua solicitação é enviada para ser analisada.""",
-    
+
     'solicitacao_de_interrupcao_de_registro': """SOLICITAÇÃO DE INTERRUPÇÃO DE REGISTRO.
-    
+
     Para solicitar a INTERRUPÇÃO DE REGISTRO proceda da seguinte forma:
 
-    Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     Selecione a opção PROTOCOLOS, em seguida CADASTRAR;
 
@@ -58,10 +59,10 @@ TEXTOS_PARA_COLAR = {
     Em DOCUMENTOS ANEXOS, clique em NOVO ARQUIVO, em seguida anexe um documento comprobatório que informe que você não possui atividade laborativa compatível com a área técnica (declaração de não ocupação de cargo ou atividade na área de sua formação técnica profissional, constando nome completo e CPF, assinada pelo requerente e datada).
 
     Por fim, clique em CADASTRAR.""",
-    
+
     'solicitacao_de_reativacao_profissional_inativos': """SOLICITAÇÃO DE REATIVAÇÃO PROFISSIONAL (INATIVOS)
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Selecione a opção PROTOCOLOS, em seguida CADASTRAR;
 
@@ -83,10 +84,10 @@ TEXTOS_PARA_COLAR = {
     4. Foto 3x4, de preferência de fundo branco;
     5. Título de eleitor;
     6. Prova de quitação com a Justiça Eleitoral (comprovante de votação ou certidão de quitação eleitoral).""",
-    
+
     'procotolo_de_outros': """PROTOCOLO DE OUTROS
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR;
 
@@ -102,7 +103,7 @@ TEXTOS_PARA_COLAR = {
 
     'protocolo_de_reativacao_de_registro': """PROTOCOLO DE REATIVAÇÃO DE REGISTRO.
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR;
 
@@ -120,7 +121,7 @@ TEXTOS_PARA_COLAR = {
 
     'protocolo_de_reativacao_definitivo_ou_renovacao_de_provisorio': """PROTOCOLO DE REGISTRO DEFINITIVO OU RENOVAÇÃO DE PROVISÓRIO.
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR;
 
@@ -140,7 +141,7 @@ TEXTOS_PARA_COLAR = {
 
     'emissao_de_certidao_de_quitacao_de_pf': """EMISSÃO DE CERTIDÃO DE QUITAÇÃO DE PESSOA FÍSICA:
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Selecione a opção CERTIDÕES em seguida SOLICITAR CERTIDÃO;
 
@@ -156,12 +157,12 @@ TEXTOS_PARA_COLAR = {
 
     'emissao_de_carteira_digital': """EMISSÃO DE CARTEIRA DIGITAL:
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Selecione a opção IMPRESSÃO DE CARTEIRA.""",
 
     'solicitacao_de_carteira_fisica': """SOLICITAÇÃO DE CARTEIRA FÍSICA:
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR;
 
@@ -173,7 +174,7 @@ TEXTOS_PARA_COLAR = {
 
     'inclusao_de_foto': """INCLUSÃO DE FOTO
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR;
 
@@ -190,7 +191,7 @@ TEXTOS_PARA_COLAR = {
 
     *Passo 1: Acesso ao Sistema*
 
-    1. Acesse o sistema utilizando seu CPF e senha pessoal, através do link: https://servicos.sinceti.net.br/ 
+    1. Acesse o sistema utilizando seu CPF e senha pessoal, através do link: https://servicos.sinceti.net.br/     
 
     *Passo 2: Navegação para a Geração de Anuidade*
 
@@ -224,11 +225,10 @@ TEXTOS_PARA_COLAR = {
     Este manual visa facilitar o processo de geração de anuidades no sistema, proporcionando uma experiência clara e eficiente para o usuário.   
     """,
 
-
     'protocolo_de_inclusao_de_especializacao_tecnica': """
     PROTOCOLO DE INCLUSÃO DE ESPECIALIZAÇÃO TÉCNICA
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR
 
@@ -242,10 +242,9 @@ TEXTOS_PARA_COLAR = {
 
     7. Clique em "NOVO ARQUIVO" que encontra-se localizado acima do campo "CADASTRAR".""",
 
-
     'protocolo_inclusao_de_titulo': """PROTOCOLO INCLUSÃO DE TÍTULO:
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR
 
@@ -263,10 +262,9 @@ TEXTOS_PARA_COLAR = {
 
     OBS.: O profissional deve estar ADIMPLENTE para essa solicitação…""",
 
-
     'protocolo_de_alteracao_de_endereco': """PROTOCOLO DE ALTERAÇÃO DE ENDEREÇO:
 
-    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/
+    1. Acesse seu ambiente de serviços no SINCETI; https://servicos.sinceti.net.br/    
 
     2. Na parte superior da sua tela vai a protocolos > CADASTRAR
 
@@ -277,16 +275,15 @@ TEXTOS_PARA_COLAR = {
     5. DESCRIÇÃO DO PROTOCOLO: “Solicito a alteração do meu endereço”
 
     6. Anexe a documentação solicitada (COMPROVANTE DE RESIDÊNCIA).
-    
-    OBS.: O profissional deve estar ADIMPLENTE para essa solicitação.""",
 
+    OBS.: O profissional deve estar ADIMPLENTE para essa solicitação.""",
 
     'saudacao': """Olá me chamo Marcos do setor de atendimento do CRT 02, como posso ajudar ?""",
 
     'verificacao': """Vou verificar, um momento.""",
 
     'documentacao_comprobatoria': """Por gentileza, envie um comprovante da sua urgência, pode ser PDF, conversa, email, edital... Fico no seu aguardo. 
-    
+
     Essas informações são de forma oficial pela empresa ou plataforma de contratação se possível conter também a data limite para priorização.
     """,
 
@@ -296,203 +293,374 @@ TEXTOS_PARA_COLAR = {
 
     'texto_1.1': """Olá me chamo Marcos do setor de atendimento do CRT 02👨🏽‍💻""",
     'texto_1.2': """📣Antes de começar o atendimento gostaria de apresentar a nova ferramenta para os técnicos ganharem o mercados e serem vistos de forma privilegiadas *O técnico que faz* ✅ .""",
-    'texto_1.3': """📣Segue o link para acessar a plataforma: https://tecnicoquefaz.crt02.gov.br/ e fazer seu cadastro. 🔗""",
+    'texto_1.3': """📣Segue o link para acessar a plataforma: https://tecnicoquefaz.crt02.gov.br/     e fazer seu cadastro. 🔗""",
     'texto_1.4': """📣Se preferir enviamos vídeos, guias para orientar o seu cadastro.🎥""",
     'texto_1.5': """📣O técnico que faz conecta profissionais registrados com a sociedade em geral: o técnico pode incluir seu currículo e oferecer serviços; a empresa pode encontrar candidatos habilitados para preencher suas vagas; e a sociedade pode encontrar opções de serviços com qualidade e responsabilidade técnica. Cadastre-se gratuitamente agora mesmo!🌐"""
-
-    # Adicione quantos textos quiser
-    # 'minha_chave_nova': "Meu novo texto rápido."
 }
 
-# =====================================================#
-## Fim da Variável de dicionário ##
-# =====================================================#
 
 # =====================================================#
-## Início função colar texto ##
+## Funções de Automação (reutilizadas) ##
 # =====================================================#
 
-# 2. A função agora recebe um argumento: a 'chave_do_texto'
 def colar_texto(chave_do_texto):
     print(f"\nFunção 'colar_texto' chamada com a chave: {chave_do_texto}")
     pyautogui.FAILSAFE = True
 
-    # 3. Busca o texto no dicionário
     texto_final = TEXTOS_PARA_COLAR.get(chave_do_texto)
-
-    # 4. Se não encontrar o texto, avisa e para
     if not texto_final:
         print(f"Erro: Chave '{chave_do_texto}' não encontrada no dicionário de textos.")
         return
 
     try:
-        # 5. Clica no centro (ajuste 960, 540 se precisar)
         pyautogui.doubleClick(2281, 1063)
         pyautogui.sleep(0.1)
-
-        # 6. Copia e Cola
         pyperclip.copy(texto_final)
         pyautogui.hotkey('ctrl', 'v')
-        
         print(f"Texto '{chave_do_texto}' colado com sucesso.")
-
     except Exception as e:
         print(f"Ocorreu um erro no PyAutoGUI: {e}")
 
-# Teste (se você rodar 'python3 teste.py' diretamente)
-if __name__ == "__main__":
-    import time
-    print("Iniciando teste da função em 3 segundos...")
-    print("Clique onde o texto deve aparecer!")
-    time.sleep(3)
-    
-    print("\nTestando chave 'solicitacao_de_registro_profissional'...")
-    colar_texto('solicitacao_de_registro_profissional')
-    time.sleep(2)
-    
-    print("\nTestando chave 'saudacao'...")
-    colar_texto('saudacao')
-
-# =====================================================#
-## Fim função colar_texto ##
-# =====================================================#
-
-# =====================================================#
-## Início função colar_texto_sequência##
-# =====================================================#
-
-def colar_texto_sequencia(chaves):
-
-    """
-    Cola sequencialmente os textos associados às chaves fornecidas.
-    Espera 2 segundos entre cada colagem.
-    Após a última colagem, pressiona Enter.
-    """
-    print(f"\nFunção 'colar_textos_sequencia' chamada com chaves: {chaves}")
-    pyautogui.FAILSAFE = True
-
-    # Verifica se a lista de chaves está vazia
-
-    if not chaves:
-        print("Erro: lista chaves vazia")
-        return
-
-    # Cria uma lista de chaves para iterar
-
-    for chave in chaves:
-        print(f"Colando texto: {chave}")
-        pyautogui.press('backspace')
-        colar_texto(chave) # chama a função existente
-        pyautogui.sleep(2) # espera 2 segundos
-        pyautogui.press('enter')
-
-    print("\nTextos colados com sucesso")
-
-    # Chamada de função enviar_imagens()
-    enviar_imagens() # < - - Chamada de função
-
-
-# =====================================================#
-## fim função colar texto sequência ##
-# =====================================================#
-
-# =====================================================#
-## Início função enviar imagens de benefícios e sobre técnico que faz##
-# =====================================================#
-
-#Envia 3 imagens seguindo a sequência de ações definidas
 
 def enviar_imagens():
     print("\n Iniciando o envio de imagens (Benefícios e sobre técnico que faz)")
     pyautogui.FAILSAFE = True
 
     try:
-        # 1 - Clicar no anexar arquivos
-        pyautogui.click(x=371, y=1028) # Posição do botão anexar arquivos
+        pyautogui.click(x=371, y=1028)
         pyautogui.sleep(2)
-
-        # 2 - Clicar em início
-        pyautogui.click(x=37, y=465) # Posição do botão início
+        pyautogui.click(x=37, y=465)
         pyautogui.sleep(2)
-
-        # 3 - Clicar na lupa
-        pyautogui.click(x=1793, y=382) # Posição na lupa
+        pyautogui.click(x=1793, y=382)
         pyautogui.sleep(2)
-
-        # 4 - Escrever Documentos
         pyautogui.typewrite("documentos")
         pyautogui.sleep(2)
-         # Enter após digitar
-
-        # 5 - Apertar seta para baixo 2X + Enter
         pyautogui.press('down')
         pyautogui.sleep(2)
         pyautogui.press('enter')
         pyautogui.sleep(2)
-
-        # 6 = Clicar na lupa novamente
-        pyautogui.click(x=1793, y=382)  # Posição na lupa
+        pyautogui.click(x=1793, y=382)
         pyautogui.sleep(2)
-
-        # 7 - Escrever trabalho
         pyautogui.typewrite('Trabalho')
         pyautogui.sleep(2)
         pyautogui.press('down')
         pyautogui.sleep(2)
         pyautogui.press('enter')
         pyautogui.sleep(2)
-
-        # 8 - Clicar na lupa novamente
-        pyautogui.click(x=1793, y=382)  # Posição na lupa
+        pyautogui.click(x=1793, y=382)
         pyautogui.sleep(2)
-
-        # 9 - Escrever crt_02
         pyautogui.typewrite('crt_02')
         pyautogui.sleep(2)
         pyautogui.press('down')
         pyautogui.sleep(2)
         pyautogui.press('enter')
         pyautogui.sleep(2)
-
-        # 10 - Clicar na lupa novamente
-        pyautogui.click(x=1793, y=382)  # Posição na lupa
+        pyautogui.click(x=1793, y=382)
         pyautogui.sleep(2)
-
-        # 11 - Escrever folders_tecnico_que_faz
         pyautogui.typewrite('folders_tecnico_que_faz')
         pyautogui.sleep(2)
         pyautogui.press('down')
         pyautogui.sleep(2)
         pyautogui.press('enter')
         pyautogui.sleep(2)
-
-        # 12 - Apertar seta para cima 1X
         pyautogui.press('up')
         pyautogui.sleep(2)
-
-        # 13 - Apertar seta para baixo 2X + Enter (ERRADO POIS TEM QUE SEGURAR O SHIFT)
-        pyautogui.keyDown('shift+a')
-        pyautogui.sleep(2)
         with pyautogui.hold('shift'):
-            pyautogui.sleep(2)
-            pyautogui.press(['down', 'down'])
-            pyautogui.sleep(2)
-        #pyautogui.press('down')
-        #pyautogui.sleep(2)
-        #pyautogui.press('enter')
-        #pyautogui.sleep(2)
-
-        # 14 - Apertar Enter
+            pyautogui.press('down')
+            pyautogui.sleep(0.5)
+            pyautogui.press('down')
+        pyautogui.sleep(2)
         pyautogui.press('enter')
         pyautogui.sleep(2)
-
-        # 15 - CLicar em enviar
         pyautogui.click(x=598, y=783)
         pyautogui.sleep(2)
-
         print("Envio de imagens concluído com sucesso.")
-
     except Exception as e:
-       print(f"Ocorreu um erro ao enviar as imagens: {e}")
+        print(f"Ocorreu um erro ao enviar as imagens: {e}")
 
 
+def colar_texto_sequencia(chaves):
+    print(f"\nFunção 'colar_textos_sequencia' chamada com chaves: {chaves}")
+    pyautogui.FAILSAFE = True
+
+    if not chaves:
+        print("Erro: lista chaves vazia")
+        return
+
+    for chave in chaves:
+        print(f"Colando texto: {chave}")
+        pyautogui.press('backspace')
+        colar_texto(chave)
+        pyautogui.sleep(2)
+        pyautogui.press('enter')
+
+    print("\nTextos colados com sucesso")
+    enviar_imagens()
+
+
+# =====================================================#
+## Mapeamento de Atalhos ##
+# =====================================================#
+MAPEAMENTO_ATALHOS = {
+    '<shift>+q': 'solicitacao_de_registro_profissional',
+    '<shift>+w': 'solicitacao_de_interrupcao_de_registro',
+    '<shift>+e': 'solicitacao_de_reativacao_profissional_inativos',
+    '<shift>+r': 'procotolo_de_outros',
+    '<shift>+t': 'protocolo_de_reativacao_de_registro',
+    '<shift>+y': 'protocolo_de_reativacao_definitivo_ou_renovacao_de_provisorio',
+    '<shift>+u': 'emissao_de_certidao_de_quitacao_de_pf',
+    '<shift>+i': 'emissao_de_carteira_digital',
+    '<shift>+o': 'solicitacao_de_carteira_fisica',
+    '<shift>+p': 'inclusao_de_foto',
+    '<shift>+a': 'manual_instrutivo_para_geracao_de_anuidade',
+    '<shift>+s': 'protocolo_de_inclusao_de_especializacao_tecnica',
+    '<shift>+d': 'protocolo_inclusao_de_titulo',
+    '<shift>+f': 'protocolo_de_alteracao_de_endereco',
+    '<shift>+g': 'saudacao',
+    '<shift>+h': 'verificacao',
+    '<shift>+j': 'documentacao_comprobatoria',
+    '<shift>+k': 'aguardando_retorno',
+    '<shift>+l': 'algo_mais',
+    '<shift>+ç': 'texto_1.1,texto_1.2,texto_1.3,texto_1.4,texto_1.5'
+}
+
+
+# =====================================================#
+## Callbacks com Gerenciamento de Janela (CORRIGIDO) ##
+# =====================================================#
+def criar_callback(chave_do_texto):
+    def callback():
+        # Minimiza imediatamente
+        root.iconify()
+
+        # Executa a automação em thread separada para não bloquear a UI
+        def run_automation():
+            try:
+                colar_texto(chave_do_texto)
+            finally:
+                # Restaura a janela após conclusão (usando after para garantir execução na thread principal)
+                root.after(100, lambda: (
+                    root.deiconify(),
+                    root.lift(),
+                    root.attributes('-topmost', True),
+                    root.focus_force(),
+                    root.after(300, lambda: root.attributes('-topmost', False))
+                ))
+
+        threading.Thread(target=run_automation, daemon=True).start()
+
+    return callback
+
+
+def criar_callback_sequencia(chaves_str):
+    chaves = chaves_str.split(',')
+
+    def callback():
+        # Minimiza imediatamente
+        root.iconify()
+
+        # Executa a automação em thread separada
+        def run_automation():
+            try:
+                colar_texto_sequencia(chaves)
+            finally:
+                # Restaura a janela após conclusão
+                root.after(100, lambda: (
+                    root.deiconify(),
+                    root.lift(),
+                    root.attributes('-topmost', True),
+                    root.focus_force(),
+                    root.after(300, lambda: root.attributes('-topmost', False))
+                ))
+
+        threading.Thread(target=run_automation, daemon=True).start()
+
+    return callback
+
+
+# =====================================================#
+## Configuração da Interface Tkinter ##
+# =====================================================#
+root = tk.Tk()
+root.title("Atalhos CRT-02")
+root.geometry("400x920")
+root.resizable(False, False)
+root.attributes('-topmost', True)
+root.configure(bg='#1e1e1e')
+
+# Estilos
+title_font = font.Font(family="Segoe UI", size=12, weight="bold")
+shortcut_font = font.Font(family="Segoe UI", size=10)
+header_bg = '#2d2d2d'
+shortcut_bg = '#252526'
+text_fg = '#d4d4d4'
+highlight_bg = '#3e3e42'
+
+# Cabeçalho
+header = tk.Label(
+    root,
+    text="📋 ATALHOS CRT-02",
+    font=title_font,
+    bg=header_bg,
+    fg='#569cd6',
+    pady=8
+)
+header.pack(fill=tk.X)
+
+# Container para os atalhos
+frame = tk.Frame(root, bg='#1e1e1e', padx=10, pady=5)
+frame.pack(fill=tk.BOTH, expand=True)
+
+# Canvas com scrollbar
+canvas = tk.Canvas(frame, bg='#1e1e1e', highlightthickness=0)
+scrollbar = tk.Scrollbar(frame, orient="vertical", command=canvas.yview)
+scrollable_frame = tk.Frame(canvas, bg='#1e1e1e')
+
+scrollable_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+
+canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+canvas.configure(yscrollcommand=scrollbar.set)
+
+canvas.pack(side="left", fill="both", expand=True)
+scrollbar.pack(side="right", fill="y")
+
+# Mapeamento amigável para nomes dos atalhos
+NOMES_AMIGAVEIS = {
+    'solicitacao_de_registro_profissional': 'Solicitação de Registro',
+    'solicitacao_de_interrupcao_de_registro': 'Interrupção de Registro',
+    'solicitacao_de_reativacao_profissional_inativos': 'Reativação (Inativos)',
+    'procotolo_de_outros': 'Protocolo de Outros',
+    'protocolo_de_reativacao_de_registro': 'Reativação de Registro',
+    'protocolo_de_reativacao_definitivo_ou_renovacao_de_provisorio': 'Registro Definitivo/Provisório',
+    'emissao_de_certidao_de_quitacao_de_pf': 'Certidão de Quitação PF',
+    'emissao_de_carteira_digital': 'Carteira Digital',
+    'solicitacao_de_carteira_fisica': 'Carteira Física',
+    'inclusao_de_foto': 'Inclusão de Foto',
+    'manual_instrutivo_para_geracao_de_anuidade': 'Manual de Anuidade',
+    'protocolo_de_inclusao_de_especializacao_tecnica': 'Inclusão de Especialização',
+    'protocolo_inclusao_de_titulo': 'Inclusão de Título',
+    'protocolo_de_alteracao_de_endereco': 'Alteração de Endereço',
+    'saudacao': 'Saudação',
+    'verificacao': 'Verificação',
+    'documentacao_comprobatoria': 'Documentação Comprobatória',
+    'aguardando_retorno': 'Aguardando Retorno',
+    'algo_mais': 'Ajuda em algo mais?',
+    'texto_1.1': 'Novo Atendimento (Parte 1)',
+    'texto_1.2': 'Novo Atendimento (Parte 2)',
+    'texto_1.3': 'Novo Atendimento (Parte 3)',
+    'texto_1.4': 'Novo Atendimento (Parte 4)',
+    'texto_1.5': 'Novo Atendimento (Parte 5)'
+}
+
+# Adiciona os atalhos na interface COM CLIQUE FUNCIONAL
+for atalho, chave in MAPEAMENTO_ATALHOS.items():
+    # Determina o callback correto
+    if ',' in chave:
+        callback = criar_callback_sequencia(chave)
+        chaves_separadas = chave.split(',')
+        nome_exibicao = " + ".join([NOMES_AMIGAVEIS.get(c.strip(), c.strip()) for c in chaves_separadas[:2]] + (
+            ['...'] if len(chaves_separadas) > 2 else []))
+    else:
+        callback = criar_callback(chave)
+        nome_exibicao = NOMES_AMIGAVEIS.get(chave, chave.replace('_', ' ').title())
+
+    # Formata o atalho para exibição amigável
+    atalho_exibicao = atalho.replace('<shift>+', 'Shift + ').replace('<ctrl>+', 'Ctrl + ').upper()
+
+    # Container para cada item
+    item_frame = tk.Frame(scrollable_frame, bg=shortcut_bg, pady=3, padx=8, relief=tk.RAISED, borderwidth=1)
+    item_frame.pack(fill=tk.X, pady=2)
+
+    # Nome do atalho (CLICÁVEL)
+    nome_label = tk.Label(
+        item_frame,
+        text=nome_exibicao,
+        font=shortcut_font,
+        bg=shortcut_bg,
+        fg=text_fg,
+        anchor="w",
+        wraplength=280,
+        cursor="hand2"  # Cursor de mão para indicar clicável
+    )
+    nome_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+    # Tecla de atalho (CLICÁVEL)
+    tecla_label = tk.Label(
+        item_frame,
+        text=atalho_exibicao,
+        font=shortcut_font,
+        bg=highlight_bg,
+        fg='#4ec9b0',
+        padx=8,
+        pady=2,
+        borderwidth=1,
+        relief=tk.RAISED,
+        cursor="hand2"  # Cursor de mão para indicar clicável
+    )
+    tecla_label.pack(side=tk.RIGHT)
+
+    # Torna TODO o item clicável
+    item_frame.bind("<Button-1>", lambda e, cb=callback: cb())
+    nome_label.bind("<Button-1>", lambda e, cb=callback: cb())
+    tecla_label.bind("<Button-1>", lambda e, cb=callback: cb())
+
+# Rodapé informativo
+footer = tk.Label(
+    root,
+    text="Clique no item ou use as teclas para acionar\nJanela minimiza automaticamente durante a automação",
+    font=("Segoe UI", 8),
+    bg='#2d2d2d',
+    fg='#999999',
+    pady=6
+)
+footer.pack(fill=tk.X)
+
+# =====================================================#
+## Configuração do Listener de Teclado ##
+# =====================================================#
+hotkeys_para_ouvir = {}
+for atalho, chave in MAPEAMENTO_ATALHOS.items():
+    if ',' in chave:
+        hotkeys_para_ouvir[atalho] = criar_callback_sequencia(chave)
+    else:
+        hotkeys_para_ouvir[atalho] = criar_callback(chave)
+
+
+# Inicia o listener em thread separada
+def iniciar_listener():
+    with keyboard.GlobalHotKeys(hotkeys_para_ouvir) as listener:
+        print("✅ Listener de atalhos iniciado com sucesso")
+        print("✅ Interface gráfica carregada - Pronto para uso")
+        print("\nAtalhos configurados:")
+        for atalho, chave in MAPEAMENTO_ATALHOS.items():
+            nome = NOMES_AMIGAVEIS.get(chave.split(',')[0] if ',' in chave else chave, chave[:30])
+            print(f"  {atalho:20} → {nome}")
+        print("\n➡️  Pressione os atalhos ou CLIQUE nos itens para usar")
+        listener.join()
+
+
+listener_thread = threading.Thread(target=iniciar_listener, daemon=True)
+listener_thread.start()
+
+
+# Configura fechamento seguro
+def on_closing():
+    print("\n🛑 Encerrando aplicação...")
+    root.destroy()
+    sys.exit(0)
+
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
+
+# Mensagem de inicialização
+print("=" * 60)
+print("🚀 SISTEMA DE ATALHOS CRT-02 INICIADO")
+print("=" * 60)
+print("Interface gráfica carregada na tela")
+print("Aguardando interação do usuário...")
+
+# Inicia o loop principal
+root.mainloop()
