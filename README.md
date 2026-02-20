@@ -1,9 +1,9 @@
 ![logo_repyta](repyta_por_marcos_logo_res.jpeg)
 
 
-# Repyta
+# Repyta 
 
-##### Por Marcos
+##### Por Marcos 💻🌿
 
 1. **Introdução**
    > _Esse software tem primeiramente o objetivo de facilitar o processo copiar e colar textos para setores que trabalham com o atendimento humano, o foco do software é minimizar digitações e trocas de abas para encontrar o texto desejado, adiciono que a ferramenta também faz parte da atividade extensionista da graduação que estou executando._
