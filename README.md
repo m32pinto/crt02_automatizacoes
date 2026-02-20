@@ -1,4 +1,4 @@
-![logo_repyta](repyta_por_marcos_logo.jpeg)
+![logo_repyta](repyta_por_marcos_logo_res.jpeg)
 
 
 # Repyta
