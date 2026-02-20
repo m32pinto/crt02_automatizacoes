@@ -35,10 +35,10 @@
 6. **Créditos e Licença**
 
    > _Copyright 2026 Marcos Antonio Da Silva Pinto._
-
+   >
    > _Este projeto está licenciado sob a **Apache License, Version 2.0**._
    > _Você pode obter uma cópia da licença em: http://www.apache.org/licenses/LICENSE-2.0_
-
-Salvo exigência legal ou acordo por escrito, o software é distribuído "COMO ESTÁ", sem garantias ou condições de qualquer tipo.
+   >
+   > _Salvo exigência legal ou acordo por escrito, o software é distribuído "COMO ESTÁ", sem garantias ou condições de qualquer tipo._
 
 
