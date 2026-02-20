@@ -3,26 +3,26 @@
 ##### Por Marcos
 
 1. **Introdução**
-   > _Esse software tem primeiramente o objetivo de facilitar copiar e colar textos para atendimento._
+   > _Esse software tem primeiramente o objetivo de facilitar o processo copiar e colar textos para setores que trabalham com o atendimento humano, o foco do software é minimizar digitações e trocas de abas para encontrar o texto desejado, adiciono que a ferramenta também faz parte da atividade extensionista da graduação que estou executando._
    
 2. **Índice**
 
    >_Abaixo segue uma lista de ferramentas utilizadas para o desenvolvimento da ferramenta._
    >
-   >_📌 **PYAUTOGUI** - https://pyautogui.readthedocs.io/en/latest/_
+   >_📌 [**PYAUTOGUI**](https://pyautogui.readthedocs.io/en/latest/)_
    >
-   >_📌 **PYPERCLIP** - https://pypi.org/project/pyperclip/_
+   >_📌 [**PYPERCLIP**](https://pypi.org/project/pyperclip/)_
    >
-   >_📌 **TKINTER** - https://docs.python.org/3/library/tkinter.html_
+   >_📌 [**TKINTER**](https://docs.python.org/3/library/tkinter.html)_
    >
-   >_✨ **LMSTUDIO** - https://lmstudio.ai/_
+   >_✨ [**LMSTUDIO**](https://lmstudio.ai/)_
    >
-   >_✨ **QWEN** - https://lmstudio.ai/models/qwen/qwen3-vl-4b_
+   >_✨ [**QWEN**](https://lmstudio.ai/models/qwen/qwen3-vl-4b)_
    >
-   >_📌 **PYCHARM** - https://www.jetbrains.com/pt-br/pycharm/_
+   >_📌 [**PYCHARM**](https://www.jetbrains.com/pt-br/pycharm/)_
 
 3. **Habilidades adquiridas ou requisitadas para o projeto**
-   > _O projeto me deu um conhecimento em agentes de inteligência artificial, python e no pycharm._
+   > _O projeto forneceu conhecimento em agentes de inteligência artificial, bibliotecas python e no pycharm._
 
 4. **Como executar**
    > _Nesse primeiro momento basta executar o repyta.py que a interface iniciará, já as configurações devem ser feita dentro do código fonte nos arquivos: indice.py e inteface.py_
